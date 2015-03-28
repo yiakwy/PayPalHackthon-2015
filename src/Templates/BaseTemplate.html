@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+	{% block static-css %}
+    <title>ERIAN - ENERGY ANALYSIS DASHBOARD</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/static/lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/static/lib/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	{% endblock %}
+	
+	<!--for better apperance-->
+	<style>
+	
+	#page-wrapper {
+	left: 0px;
+	height: 100%;
+	}
+	
+	.circular {
+		width: 60px;
+		height: 60px;
+		border-radius: 150px;
+		-webkit-border-radius: 150px;
+		-moz-border-radius: 150px;
+		background: url(img/commodities/1.jpg) no-repeat;
+		}
+	</style>
+</head>
+
+<body>
+
+    <div id="wrapper">
+	<!--top-menu, side-menu-->
+	
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" ><!--ng-app="nav_header_app" id="nav_header_app"-->
+            <div id="button" class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/index/">Demo Page @ PayPal Hackthon</a>
+			<!-- /.navbar-header -->
+            </div>
+			
+            
+            <!--top bar-->
+            <ul class="nav navbar-top-links navbar-right" id="top-menu"><!--ng-controller="navHeaderController as header"-->
+				
+            </ul>
+            <!-- /.navbar-top-links -->
+
+			<!--left bar-->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div id='x' class="sidebar-nav navbar-collapse">
+	                <ul class="nav" id="side-menu">
+						
+	                </ul>
+                <!-- #sidemenu-->
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            
+        <!-- /.navbar-static-side -->
+        </nav>
+
+        <!-- Page Content -->
+        <div id="page-wrapper">
+            <div id="x" class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">{%block Title%}{% endblock %}</h1>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+ 
+				<!--main content-->          
+                {% block main-content %}
+                <div class="row">
+                	
+                </div>
+                {% endblock %}
+                
+            </div>
+            <!-- /.container-fluid -->
+		<!--Footer-->
+		{% block footer %}
+		{% include "footer.html" %}
+		{% endblock %}
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+	{% block static-js %}
+    <!-- jQuery -->
+    <script src="/static/lib/jQuery/jquery-1.11.1.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/static/lib/bootstrap/js/bootstrap.js"></script>
+	
+	<!--alternative template engine-->
+	<script src="/static/lib/jQuery-Tmpl/jquery.tmpl.js"></script>
+	<script src="/static/lib/jQuery-Tmpl/jquery.tmplPlus.js"></script>
+        
+    <!-- template component-->
+    <script id="itemTml" type="text/html">
+	    {% verbatim %}
+	    {{html htmlComponent}}
+	    {% endverbatim %}
+    </script>
+    
+    <script id="dropboxTml" type="text/html"><!--type="text/..."-->
+    
+    	{% verbatim %}
+
+	    {% endverbatim %}
+	     
+     </script>
+     
+     <script>
+       
+       	// basic pages config
+     	$(document).ready(function(){
+     		// top bar
+     		$.ajax({
+     			url: "#",
+     			type:"GET",
+     			success: function(data){
+     				
+     				$("#dropboxTml").tmpl(data.contents).appendTo("#top-menu");
+     				
+					$.each(data.formatter, function(index, value){
+						$("ul.dropdown-menu").addClass(value);
+					})
+     			},
+     			error: function(xhr, exception){
+     				alert('u need to login to see your messages and projects progress');	
+     			}
+     		})
+     		
+     		// side bar
+     		$.ajax({
+				url:"#",
+				type:"GET",
+				success: function(data){
+					$("#itemTml").tmpl(data).appendTo("#side-menu");	
+					// use this api by Lei Wang
+
+		            $("#side-menu").find("li").has("ul").children("a").on("click", function (_events) {
+		                _events.preventDefault();	
+		                $(this).parent("li").toggleClass("active").children("ul").collapse("toggle");
+		            });
+				}
+			})
+     	})
+     		
+     </script>
+     
+     <script src="/static/js/index.js"></script>
+    {% endblock %}
+    
+</body>
+
+</html>
